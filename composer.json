@@ -1,0 +1,21 @@
+{
+    "name": "mapado/doctrine-blender",
+    "description": "Package in charge of \"blending\" doctrine entities (ORM, ODM, etc.)",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Julien Deniau",
+            "email": "julien.deniau@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Mapado\\DoctrineBlender\\": "lib/" }
+    },
+    "require": {
+        "doctrine/common": "2.*"
+    },
+    "suggest": {
+        "doctrine/orm": "2.*",
+        "doctrine/mongdb-odm": "1.*"
+    }
+}
