@@ -16,6 +16,6 @@
     },
     "suggest": {
         "doctrine/orm": "2.*",
-        "doctrine/mongdb-odm": "1.*"
+        "doctrine/mongodb-odm": "1.*"
     }
 }
