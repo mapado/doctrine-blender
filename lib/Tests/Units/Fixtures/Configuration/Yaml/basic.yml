@@ -1,0 +1,17 @@
+doctrine_external_association:
+    product_order:
+        source_object_manager_alias: product_om
+        classname: 'Entity\Product'
+        property_name: 'order'
+        reference_getter: 'getOrderId'
+        reference_object_manager_alias: order_om
+        reference_class: 'Entity\Order'
+
+    another_link:
+        source_object_manager_alias: article_om
+        classname: 'Entity\Article'
+        property_name: 'tag'
+        reference_getter: 'getTagId'
+        reference_object_manager_alias: tag_om
+        reference_class: 'Entity\Tag'
+

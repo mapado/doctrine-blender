@@ -1,0 +1,7 @@
+<phpunit>
+    <testsuites name="doctrine-blender">
+        <testsuite>
+            <directory>lib/Tests/Units</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
