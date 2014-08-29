@@ -1,7 +1,10 @@
-doctrine-blender
+Doctrine Blender
 ================
 
-This package makes it really simple to "blend" doctrine entities (ORM, ODM, etc.).\
+[![Build Status](https://travis-ci.org/mapado/doctrine-blender.svg?branch=master)](https://travis-ci.org/mapado/doctrine-blender)
+
+This package makes it really simple to "blend" doctrine entities (ORM, ODM, etc.).
+
 It is greatly inspired by the [Doctrine MongoDB ODM documentation](http://doctrine-mongodb-odm.readthedocs.org/en/latest/cookbook/blending-orm-and-mongodb-odm.html) on the subject.
 
 ## Installation

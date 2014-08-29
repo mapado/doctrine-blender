@@ -1,4 +1,4 @@
-<phpunit>
+<phpunit bootstrap="vendor/autoload.php" colors="true">
     <testsuites name="doctrine-blender">
         <testsuite>
             <directory>lib/Tests/Units</directory>
