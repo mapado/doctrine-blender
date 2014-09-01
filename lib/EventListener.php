@@ -28,7 +28,9 @@ class EventListener
      */
     public function addExternalAssoctiation(ExternalAssociation $externalAssociation)
     {
-        $this->externalAssociationList[$externalAssociation->getClassName()] = $externalAssociation;
+        $className = $externalAssociation->getClassName();
+        $propertyName = $externalAssociation->getPropertyName();
+        $this->externalAssociationList[$className][$propertyName] = $externalAssociation;
     }
 
     /**
@@ -47,18 +49,23 @@ class EventListener
 
 
         if (isset($this->externalAssociationList[$entityClass])) {
-            $blend = $this->externalAssociationList[$entityClass];
+            $blendList = $this->externalAssociationList[$entityClass];
+            foreach ($blendList as $blend) {
+                $identifier = $object->{$blend->getReferenceGetter()}();
 
-            $activityReflProp = $entityManager->getClassMetadata($entityClass)
-                ->reflClass->getProperty($blend->getPropertyName());
+                if ($identifier) {
+                    $activityReflProp = $entityManager->getClassMetadata($entityClass)
+                        ->reflClass->getProperty($blend->getPropertyName());
 
-            $activityReflProp->setAccessible(true);
+                    $activityReflProp->setAccessible(true);
 
-            $activityReflProp->setValue(
-                $object,
-                $blend->getReferenceManager()
-                    ->getReference($blend->getReferenceClassName(), $object->{$blend->getReferenceGetter()}())
-            );
+                    $activityReflProp->setValue(
+                        $object,
+                        $blend->getReferenceManager()
+                            ->getReference($blend->getReferenceClassName(), $identifier)
+                    );
+                }
+            }
         }
     }
 }
