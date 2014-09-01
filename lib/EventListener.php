@@ -22,14 +22,13 @@ class EventListener
     /**
      * addExternalAssoctiation
      *
-     * @param string $className
-     * @param array $associationInfo
+     * @param ExternalAssociation $externalAssociation
      * @access public
      * @return EventListener
      */
-    public function addExternalAssoctiation($className, array $associationInfo)
+    public function addExternalAssoctiation(ExternalAssociation $externalAssociation)
     {
-        $this->externalAssociationList[$className] = $associationInfo;
+        $this->externalAssociationList[$externalAssociation->getClassName()] = $externalAssociation;
     }
 
     /**
@@ -51,13 +50,14 @@ class EventListener
             $blend = $this->externalAssociationList[$entityClass];
 
             $activityReflProp = $entityManager->getClassMetadata($entityClass)
-                ->reflClass->getProperty($blend['propertyName']);
+                ->reflClass->getProperty($blend->getPropertyName());
 
             $activityReflProp->setAccessible(true);
 
             $activityReflProp->setValue(
                 $object,
-                $blend['refManager']->getReference($blend['refClassName'], $object->{$blend['refGetter']}())
+                $blend->getReferenceManager()
+                    ->getReference($blend->getReferenceClassName(), $object->{$blend->getReferenceGetter()}())
             );
         }
     }

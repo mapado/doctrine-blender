@@ -37,42 +37,25 @@ class ObjectBlender
     /**
      * Map an external association between two differents Object Manager
      *
-     * @param ObjectManager $objectManager The source object manager containing the object
-     * @param string $className the class name of the object containing the external id
-     * @param string $propertyName the property name of the external object
-     * @param string $referenceGetter the method name to get the external object id
-     * @param ObjectManager $referenceManager the external object manager
-     * @param string $referenceClassName the external object class name
+     * @param ExternalAssociation $externalAssociation the external association object
      * @access public
      * @return void
      */
     public function mapExternalAssociation(
-        ObjectManager $objectManager,
-        $className,
-        $propertyName,
-        $referenceGetter,
-        ObjectManager $referenceManager,
-        $referenceClassName
+        ExternalAssociation $externalAssociation
     ) {
         // @See https://github.com/doctrine/common/issues/336
         //if (!($referenceManager instanceof DocumentManager || $referenceManager instanceof EntityManagerInterface)) {
-        if (!(method_exists($referenceManager, 'getReference'))) {
+        if (!(method_exists($externalAssociation->getReferenceManager(), 'getReference'))) {
             $msg = '$referenceManager needs to implements a `getReference` method';
             throw new \InvalidArgumentException($msg);
         }
 
-        $this->eventListener->addExternalAssoctiation(
-            $className,
-            [
-                'refManager' => $referenceManager,
-                'propertyName' => $propertyName,
-                'refClassName' => $referenceClassName,
-                'refGetter' => $referenceGetter,
-            ]
-        );
+        $this->eventListener->addExternalAssoctiation($externalAssociation);
 
 
-        $objectManager->getEventManager()
+        $externalAssociation->getObjectManager()
+            ->getEventManager()
             ->addEventListener(['postLoad'], $this->eventListener);
         // todo switch to doctrine event when https://github.com/doctrine/common/pull/335 is merged
     }
@@ -88,14 +71,7 @@ class ObjectBlender
     {
         $extAssocList = $configuration->getExternalAssociations();
         foreach ($extAssocList as $extAssoc) {
-            $this->mapExternalAssociation(
-                $extAssoc['source_object_manager'],
-                $extAssoc['classname'],
-                $extAssoc['property_name'],
-                $extAssoc['reference_getter'],
-                $extAssoc['reference_object_manager'],
-                $extAssoc['reference_class']
-            );
+            $this->mapExternalAssociation($extAssoc);
         }
         return $this;
     }

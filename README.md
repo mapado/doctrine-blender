@@ -17,18 +17,21 @@ composer require "mapado/doctrine-blender:0.*"
 ### Mixing ORM Entity and ODM Document
 ```php
 use Mapado\DoctrineBlender\ObjectBlender;
+use Mapado\DoctrineBlender\ExternalAssociation;
 
 $documentManager = ... // get a document manager
 $entityManager = ... // get an entity manager
 
 $eventSubscriber = new ObjectBlender;
 $eventSubscriber->mapExternalAssociation(
-    $entityManager,
-    'Acme\Entity\Order',
-    'product',
-    'getProductId',
-    $documentManager,
-    'Acme\Document\Product'
+    new ExternalAssociation(
+        $entityManager,
+        'Acme\Entity\Order',
+        'product',
+        'getProductId',
+        $documentManager,
+        'Acme\Document\Product'
+    )
 );
 ```
 
@@ -37,18 +40,21 @@ It is really easy to mix ORM Entities as well:
 
 ```php
 use Mapado\DoctrineBlender\ObjectBlender;
+use Mapado\DoctrineBlender\ExternalAssociation;
 
 $entityManager = ... // get an entity manager
 $secondEntityManager = ... // get the second manager
 
 $eventSubscriber = new ObjectBlender;
 $eventSubscriber->mapExternalAssociation(
-    $entityManager,
-    'Acme\Entity\Order',
-    'product',
-    'getProductId',
-    $secondEntityManager,
-    'Acme\Document\Product'
+    new ExternalAssociation(
+        $entityManager,
+        'Acme\Entity\Order',
+        'product',
+        'getProductId',
+        $secondEntityManager,
+        'Acme\Document\Product'
+    )
 );
 ```
 

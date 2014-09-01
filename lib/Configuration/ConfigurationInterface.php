@@ -10,7 +10,7 @@ interface ConfigurationInterface
      * getExternalAssociations
      *
      * @access public
-     * @return array
+     * @return array<ExternalAssociation>
      */
     public function getExternalAssociations();
 

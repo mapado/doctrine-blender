@@ -4,6 +4,8 @@ namespace Mapado\DoctrineBlender\Configuration;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Mapado\DoctrineBlender\ExternalAssociation;
+
 abstract class AbstractConfiguration implements ConfigurationInterface
 {
     /**
@@ -64,7 +66,23 @@ abstract class AbstractConfiguration implements ConfigurationInterface
             $this->mapObjectReference($key, $omRef);
         }
 
-        return $this->configuration['doctrine_external_association'];
+        $externalAssocList = [];
+        if (!empty($this->configuration['doctrine_external_association'])) {
+            foreach ($this->configuration['doctrine_external_association'] as $key => $config) {
+                if (isset($config['source_object_manager']) && isset($config['reference_object_manager'])) {
+                    $externalAssocList[$key] = new ExternalAssociation(
+                        $config['source_object_manager'],
+                        $config['classname'],
+                        $config['property_name'],
+                        $config['reference_getter'],
+                        $config['reference_object_manager'],
+                        $config['reference_class']
+                    );
+                }
+            }
+        }
+
+        return $externalAssocList;
     }
 
     /**

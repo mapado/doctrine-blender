@@ -36,22 +36,22 @@ class YamlConfigurationTest extends \PHPUnit_Framework_TestCase
         $config = new YamlConfiguration($this->getFixturePath() . 'basic.yml');
         $this->assertInstanceOf('Mapado\DoctrineBlender\Configuration\ConfigurationInterface', $config);
         $assoc = $config->getExternalAssociations();
-        $this->assertEquals(count($assoc), 2);
-        $curAssoc = $assoc['product_order'];
-        $this->assertEquals($curAssoc['property_name'], 'order');
-        $this->assertArrayHasKey('source_object_manager_alias', $curAssoc);
-        $this->assertArrayHasKey('classname', $curAssoc);
-        $this->assertArrayHasKey('property_name', $curAssoc);
-        $this->assertArrayHasKey('reference_getter', $curAssoc);
-        $this->assertArrayHasKey('reference_object_manager_alias', $curAssoc);
-        $this->assertArrayHasKey('reference_class', $curAssoc);
-        $this->assertArrayNotHasKey('source_object_manager', $curAssoc);
+        $this->assertEquals(count($assoc), 0);
 
         // add object manager reference
         $config->setObjectManagerReference('product_om', $this->getObjectManagerMock());
+        $config->setObjectManagerReference('order_om', $this->getObjectManagerMock());
+        $config->setObjectManagerReference('article_om', $this->getObjectManagerMock());
+        $config->setObjectManagerReference('tag_om', $this->getObjectManagerMock());
         $assoc = $config->getExternalAssociations();
+        $this->assertEquals(count($assoc), 2);
+
         $curAssoc = $assoc['product_order'];
-        $this->assertArrayHasKey('source_object_manager', $curAssoc);
+        $this->assertInstanceOf('Mapado\DoctrineBlender\ExternalAssociation', $curAssoc);
+        $this->assertEquals($curAssoc->getPropertyName(), 'order');
+        $this->assertEquals($curAssoc->getClassName(), 'Entity\Product');
+        $this->assertEquals($curAssoc->getReferenceGetter(), 'getOrderId');
+        $this->assertEquals($curAssoc->getReferenceClassName(), 'Entity\Order');
     }
 
     private function getObjectManagerMock()
