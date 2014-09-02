@@ -2,7 +2,6 @@
 
 namespace Mapado\DoctrineBlender;
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 /**
  * EventListener
@@ -36,13 +35,17 @@ class EventListener
     /**
      * postLoad
      *
-     * @param LifecycleEventArgs $eventArgs
+     * @param \Doctrine\Common\Persistence\Event\LifecycleEventArgs|\Mapado\DoctrineBlender\Event\ObjectEvent $eventArgs
      * @access public
      *
      * @return void
      */
-    public function postLoad(LifecycleEventArgs $eventArgs)
+    public function postLoad($eventArgs)
     {
+        if (!method_exists($eventArgs, 'getObject')) {
+            throw new \InvalidArgumentException('$eventArgs must implement a `getObject` method');
+        }
+
         $object = $eventArgs->getObject();
         $entityClass = get_class($object);
 
