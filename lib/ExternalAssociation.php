@@ -31,12 +31,12 @@ class ExternalAssociation
     private $propertyName;
 
     /**
-     * referenceGetter
+     * referenceIdGetter
      *
      * @var string
      * @access private
      */
-    private $referenceGetter;
+    private $referenceIdGetter;
 
     /**
      * referenceManager
@@ -60,25 +60,29 @@ class ExternalAssociation
      * @param ObjectManager $objectManager The source object manager containing the object
      * @param string $className the class name of the object containing the external id
      * @param string $propertyName the property name of the external object
-     * @param string $referenceGetter the method name to get the external object id
      * @param ObjectManager $referenceManager the external object manager
      * @param string $referenceClassName the external object class name
+     * @param string $referenceIdGetter the method name to get the external object id
+     * @param string $referenceSetter the method name to set the external object id
      * @access public
      */
     public function __construct(
         $objectManager,
         $className,
         $propertyName,
-        $referenceGetter,
         $referenceManager,
-        $referenceClassName
+        $referenceClassName,
+        $referenceIdGetter = null,
+        $referenceSetter = null
     ) {
         $this->objectManager = $objectManager;
         $this->className = $className;
         $this->propertyName = $propertyName;
-        $this->referenceGetter = $referenceGetter;
         $this->referenceManager = $referenceManager;
         $this->referenceClassName = $referenceClassName;
+
+        $this->referenceIdGetter = $referenceIdGetter ?: 'get' . ucfirst($propertyName) . 'Id';
+        $this->referenceSetter = $referenceSetter ?: 'set' . ucfirst($propertyName);
     }
 
     /**
@@ -151,25 +155,48 @@ class ExternalAssociation
     }
 
     /**
-     * Gets the value of referenceGetter
+     * Gets the value of referenceIdGetter
      *
      * @return string
      */
-    public function getReferenceGetter()
+    public function getReferenceIdGetter()
     {
-        return $this->referenceGetter;
+        return $this->referenceIdGetter;
     }
 
     /**
-     * Sets the value of referenceGetter
+     * Sets the value of referenceIdGetter
      *
-     * @param string $referenceGetter reference getter
+     * @param string $referenceIdGetter reference getter
      *
      * @return ExternalAssociation
      */
-    public function setReferenceGetter($referenceGetter)
+    public function setReferenceIdGetter($referenceIdGetter)
     {
-        $this->referenceGetter = $referenceGetter;
+        $this->referenceIdGetter = $referenceIdGetter;
+        return $this;
+    }
+
+    /**
+     * Gets the value of referenceSetter
+     *
+     * @return string
+     */
+    public function getReferenceSetter()
+    {
+        return $this->referenceSetter;
+    }
+
+    /**
+     * Sets the value of referenceSetter
+     *
+     * @param string $referenceSetter reference setter
+     *
+     * @return ExternalAssociation
+     */
+    public function setReferenceSetter($referenceSetter)
+    {
+        $this->referenceSetter = $referenceSetter;
         return $this;
     }
 

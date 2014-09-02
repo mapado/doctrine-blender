@@ -44,26 +44,20 @@ class EventListener
     public function postLoad(LifecycleEventArgs $eventArgs)
     {
         $object = $eventArgs->getObject();
-        $entityManager = $eventArgs->getObjectManager();
         $entityClass = get_class($object);
-
 
         if (isset($this->externalAssociationList[$entityClass])) {
             $blendList = $this->externalAssociationList[$entityClass];
             foreach ($blendList as $blend) {
-                $identifier = $object->{$blend->getReferenceGetter()}();
+                $identifier = $object->{$blend->getReferenceIdGetter()}();
 
                 if ($identifier) {
-                    $activityReflProp = $entityManager->getClassMetadata($entityClass)
-                        ->reflClass->getProperty($blend->getPropertyName());
+                    $setter = $blend->getReferenceSetter();
+                    $reference =$blend->getReferenceManager()
+                        ->getReference($blend->getReferenceClassName(), $identifier);
 
-                    $activityReflProp->setAccessible(true);
+                    $object->{$setter}($reference);
 
-                    $activityReflProp->setValue(
-                        $object,
-                        $blend->getReferenceManager()
-                            ->getReference($blend->getReferenceClassName(), $identifier)
-                    );
                 }
             }
         }

@@ -28,9 +28,10 @@ $eventSubscriber->mapExternalAssociation(
         $entityManager,
         'Acme\Entity\Order',
         'product',
-        'getProductId',
         $documentManager,
-        'Acme\Document\Product'
+        'Acme\Document\Product',
+        'getProductId', // optional, auto-generated with the property name
+        'setProduct' // optional, auto-generated with the property name
     )
 );
 ```
@@ -51,7 +52,6 @@ $eventSubscriber->mapExternalAssociation(
         $entityManager,
         'Acme\Entity\Order',
         'product',
-        'getProductId',
         $secondEntityManager,
         'Acme\Document\Product'
     )
@@ -67,9 +67,10 @@ doctrine_external_association:
         source_object_manager_alias: product_em # an alias you will need to inject later
         classname: 'Entity\Product'
         property_name: 'product'
-        reference_getter: 'getProductId'
         reference_object_manager_alias: order_dm # another alia
         reference_class: 'Document\Order'
+        reference_getter: 'getProductId'
+        reference_setter: 'setProduct'
 ```
 
 ```php

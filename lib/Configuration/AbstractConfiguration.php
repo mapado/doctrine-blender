@@ -70,13 +70,17 @@ abstract class AbstractConfiguration implements ConfigurationInterface
         if (!empty($this->configuration['doctrine_external_association'])) {
             foreach ($this->configuration['doctrine_external_association'] as $key => $config) {
                 if (isset($config['source_object_manager']) && isset($config['reference_object_manager'])) {
+
+                    $refIdGetter = !empty($config['reference_id_getter']) ? $config['reference_id_getter'] : null;
+                    $refSetter = !empty($config['reference_setter']) ? $config['reference_setter'] : null;
                     $externalAssocList[$key] = new ExternalAssociation(
                         $config['source_object_manager'],
                         $config['classname'],
                         $config['property_name'],
-                        $config['reference_getter'],
                         $config['reference_object_manager'],
-                        $config['reference_class']
+                        $config['reference_class'],
+                        $refIdGetter,
+                        $refSetter
                     );
                 }
             }

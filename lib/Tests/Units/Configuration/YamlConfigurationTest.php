@@ -50,8 +50,14 @@ class YamlConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Mapado\DoctrineBlender\ExternalAssociation', $curAssoc);
         $this->assertEquals($curAssoc->getPropertyName(), 'order');
         $this->assertEquals($curAssoc->getClassName(), 'Entity\Product');
-        $this->assertEquals($curAssoc->getReferenceGetter(), 'getOrderId');
+        $this->assertEquals($curAssoc->getReferenceIdGetter(), 'getOrderId');
+        $this->assertEquals($curAssoc->getReferenceSetter(), 'setOrder');
         $this->assertEquals($curAssoc->getReferenceClassName(), 'Entity\Order');
+
+        $curAssoc = $assoc['another_link'];
+        $this->assertInstanceOf('Mapado\DoctrineBlender\ExternalAssociation', $curAssoc);
+        $this->assertEquals($curAssoc->getReferenceIdGetter(), 'getTagId');
+        $this->assertEquals($curAssoc->getReferenceSetter(), 'setTag');
     }
 
     private function getObjectManagerMock()
