@@ -7,6 +7,12 @@ This package makes it really simple to "blend" doctrine entities (ORM, ODM, etc.
 
 It is greatly inspired by the [Doctrine MongoDB ODM documentation](http://doctrine-mongodb-odm.readthedocs.org/en/latest/cookbook/blending-orm-and-mongodb-odm.html) on the subject.
 
+## Current status
+It should work with every doctrine package.
+It is tested with Doctrine ORM and Doctrine MongoDB.
+
+It also working with [mapado/elastica-query-bundle](https://github.com/mapado/elastica-query-bundle) in the ElasticSearch => Doctrine direction.
+
 ## Installation
 ```sh
 composer require "mapado/doctrine-blender:0.*"
