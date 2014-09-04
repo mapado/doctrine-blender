@@ -47,20 +47,22 @@ class EventListener
         }
 
         $object = $eventArgs->getObject();
-        $entityClass = get_class($object);
 
-        if (isset($this->externalAssociationList[$entityClass])) {
-            $blendList = $this->externalAssociationList[$entityClass];
-            foreach ($blendList as $blend) {
-                $identifier = $object->{$blend->getReferenceIdGetter()}();
+        $classList = array_keys($this->externalAssociationList);
+        foreach ($classList as $className) {
+            if (is_a($object, $className)) {
+                $blendList = $this->externalAssociationList[$className];
+                foreach ($blendList as $blend) {
+                    $identifier = $object->{$blend->getReferenceIdGetter()}();
 
-                if ($identifier) {
-                    $setter = $blend->getReferenceSetter();
-                    $reference =$blend->getReferenceManager()
-                        ->getReference($blend->getReferenceClassName(), $identifier);
+                    if ($identifier) {
+                        $setter = $blend->getReferenceSetter();
+                        $reference =$blend->getReferenceManager()
+                            ->getReference($blend->getReferenceClassName(), $identifier);
 
-                    $object->{$setter}($reference);
+                        $object->{$setter}($reference);
 
+                    }
                 }
             }
         }
