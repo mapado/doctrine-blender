@@ -59,7 +59,7 @@ class EventListener
 
                         $setter = $blend->getReferenceSetter();
 
-                        if (is_array($identifier) || $identifier instanceof Iterator) {
+                        if (is_array($identifier) || $identifier instanceof Traversable) {
                             $referenceList = [];
                             foreach ($identifier as $scalarIdentifier) {
                                 $referenceList[] = $blend->getReferenceManager()
