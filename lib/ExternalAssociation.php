@@ -38,6 +38,15 @@ class ExternalAssociation
      */
     private $referenceIdGetter;
 
+
+    /**
+     * referenceSetter
+     *
+     * @var string
+     * @access private
+     */
+    private $referenceSetter;
+
     /**
      * referenceManager
      *

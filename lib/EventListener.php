@@ -56,12 +56,23 @@ class EventListener
                     $identifier = $object->{$blend->getReferenceIdGetter()}();
 
                     if ($identifier) {
+
                         $setter = $blend->getReferenceSetter();
-                        $reference =$blend->getReferenceManager()
-                            ->getReference($blend->getReferenceClassName(), $identifier);
 
-                        $object->{$setter}($reference);
+                        if (is_array($identifier) || $identifier instanceof Iterator) {
+                            $referenceList = [];
+                            foreach ($identifier as $scalarIdentifier) {
+                                $referenceList[] = $blend->getReferenceManager()
+                                ->getReference($blend->getReferenceClassName(), $scalarIdentifier);
+                            }
+                            $object->{$setter}($referenceList);
 
+                        } else {
+                            $reference = $blend->getReferenceManager()
+                                ->getReference($blend->getReferenceClassName(), $identifier);
+
+                            $object->{$setter}($reference);
+                        }
                     }
                 }
             }
